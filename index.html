@@ -56,8 +56,8 @@
     </div>
 
     <script>
-        // 各キャラクターの投票数を記録するオブジェクト
-        var votes = {
+        // キャラクターの投票数をローカルストレージから取得する
+        var votes = JSON.parse(localStorage.getItem('votes')) || {
             'ドラえもん': 0,
             'のび太': 0,
             'しずか': 0,
@@ -101,6 +101,9 @@
             votes[characterName]++; // 投票数を増やす
             displayCharacters(); // キャラクターを再表示して投票数を更新する
             
+            // ローカルストレージに投票数を保存
+            localStorage.setItem('votes', JSON.stringify(votes));
+
             // 通知を表示
             var notificationDiv = document.getElementById('notification');
             notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
@@ -119,4 +122,5 @@
     </script>
 </body>
 </html>
+
 
