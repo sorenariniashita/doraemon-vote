@@ -44,11 +44,18 @@
             border: 1px solid #f0ad4e;
             border-radius: 5px;
         }
+        .additional-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>ドラえもんのキャラクター総選挙</h2>
+        <div class="additional-info">
+            <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
+        </div>
         <div class="notification" id="notification"></div>
         <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
@@ -107,20 +114,4 @@
             // 通知を表示
             var notificationDiv = document.getElementById('notification');
             notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
-            // 3秒後に通知をクリア
-            setTimeout(function() {
-                notificationDiv.textContent = '';
-            }, 3000);
-
-            // ここに一票を投じたという処理を記述する（例：データベースに投票情報を保存するなど）
-        }
-
-        // ページ読み込み時にキャラクターを表示する
-        window.onload = function() {
-            displayCharacters();
-        };
-    </script>
-</body>
-</html>
-
-
+            // 3秒後に通知をク
