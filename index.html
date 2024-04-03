@@ -34,6 +34,12 @@
             overflow: hidden; /* 横方向のオーバーフローを隠す */
             text-overflow: ellipsis; /* オーバーフローしたテキストを省略記号で表示 */
         }
+        .character-name {
+            margin-bottom: 5px; /* 投票数との間隔を設定 */
+        }
+        .character-votes {
+            font-size: 12px; /* 投票数のフォントサイズを設定 */
+        }
         .character:hover {
             background-color: #d9d9d9;
         }
@@ -111,7 +117,14 @@
             sortedCharacters.forEach(function(characterName) {
                 var characterDiv = document.createElement('div');
                 characterDiv.className = 'character';
-                characterDiv.textContent = characterName + '（' + votes[characterName] + '票）';
+                var characterNameDiv = document.createElement('div');
+                characterNameDiv.className = 'character-name';
+                characterNameDiv.textContent = characterName;
+                var characterVotesDiv = document.createElement('div');
+                characterVotesDiv.className = 'character-votes';
+                characterVotesDiv.textContent = '（' + votes[characterName] + '票）';
+                characterDiv.appendChild(characterNameDiv);
+                characterDiv.appendChild(characterVotesDiv);
                 characterDiv.onclick = function() {
                     vote(characterName);
                 };
