@@ -10,14 +10,14 @@
             font-family: Impact, sans-serif; /* インパクトのフォントを使用 */
             margin: 0;
             padding: 0;
-            background-color: #1294FF; /* ドラえもんの青色に設定 */
+            background-color: #d9edf7; /* 薄い青色に設定 */
             color: black; /* フォントを黒色に設定 */
         }
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #d9edf7; /* 薄い青色に設定 */
+            background-color: #1294FF; /* ドラえもんの青色に設定 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -78,7 +78,7 @@
         <h2>ドラえもん総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
-            <div class="countdown" id="countdown">2112年までのカウントダウン</div>
+            <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
         <div id="characters">
@@ -159,26 +159,25 @@
 
         // カウントダウンを表示する関数
         function displayCountdown() {
+            // 現在の日時を取得
+            var now = new Date();
             // 目標日時を設定 (2112年9月3日)
             var targetDate = new Date('2112-09-03T00:00:00+09:00');
+            // 残り時間を計算
+            var timeDiff = targetDate - now;
+
+            // 残りの日数、時間、分、秒を計算
+            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            // カウントダウンを表示
+            var countdownElement = document.getElementById('countdown');
+            countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
             
             // 1秒ごとに更新
-            setInterval(function() {
-                // 現在の日時を取得
-                var now = new Date();
-                // 残り時間を計算
-                var timeDiff = targetDate - now;
-
-                // 残りの日数、時間、分、秒を計算
-                var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-                // カウントダウンを表示
-                var countdownElement = document.getElementById('countdown');
-                countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
-            }, 1000);
+            setTimeout(displayCountdown, 1000);
         }
 
         // ページ読み込み時にキャラクターとカウントダウンを表示
