@@ -10,14 +10,14 @@
             font-family: Impact, sans-serif; /* インパクトのフォントを使用 */
             margin: 0;
             padding: 0;
-            background-color: #1294FF; /* ドラえもんの青色に設定 */
+            background-color: #d9edf7; /* 薄い青色に設定 */
             color: black; /* フォントを黒色に設定 */
         }
         .container {
             max-width: 800px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #d9edf7; /* 薄い青色に設定 */
+            background-color: #1294FF; /* ドラえもんの青色に設定 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -37,6 +37,12 @@
         .character-name {
             margin-bottom: 5px; /* 投票数との間隔を設定 */
             width: 100%; /* 名前の部分の横幅を100%に設定 */
+        }
+        .character img {
+            width: 80px; /* 画像の幅を設定 */
+            height: 80px; /* 画像の高さを設定 */
+            border-radius: 50%; /* 画像を丸くする */
+            margin-bottom: 5px; /* 画像と名前の間隔を設定 */
         }
         .character-votes {
             font-size: 16px; /* 投票数のフォントサイズを設定 */
@@ -78,7 +84,7 @@
         <h2>ドラえもん総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
-            <div class="countdown" id="countdown">2112年までのカウントダウン</div>
+            <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
         <div id="characters">
@@ -116,26 +122,25 @@
             var charactersDiv = document.getElementById('characters');
             charactersDiv.innerHTML = ''; // 要素をクリアする
 
-            // 投票数の多い順にキャラクターをソート
-            var sortedCharacters = Object.keys(votes).sort(function(a, b) {
-                return votes[b] - votes[a];
-            });
-
-            // ソートされたキャラクターを表示
-            sortedCharacters.forEach(function(characterName) {
+            // 各キャラクターを処理
+            Object.keys(votes).forEach(function(characterName) {
                 var characterDiv = document.createElement('div');
                 characterDiv.className = 'character';
+                characterDiv.onclick = function() {
+                    vote(characterName);
+                };
+                var imageElement = document.createElement('img');
+                imageElement.src = characterName.toLowerCase() + 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG3Nr24Fllnz92lZmmUkB3UyjlhFaE8tSxIkLaeGhNqg&s'; // 画像のファイル名はキャラクターの名前に合わせる
+                imageElement.alt = characterName;
                 var nameElement = document.createElement('div');
                 nameElement.className = 'character-name';
                 nameElement.textContent = characterName;
                 var votesElement = document.createElement('div');
                 votesElement.className = 'character-votes';
                 votesElement.textContent = '[' + votes[characterName] + '票]';
+                characterDiv.appendChild(imageElement);
                 characterDiv.appendChild(nameElement);
                 characterDiv.appendChild(votesElement);
-                characterDiv.onclick = function() {
-                    vote(characterName);
-                };
                 charactersDiv.appendChild(characterDiv);
             });
         }
@@ -159,26 +164,25 @@
 
         // カウントダウンを表示する関数
         function displayCountdown() {
+            // 現在の日時を取得
+            var now = new Date();
             // 目標日時を設定 (2112年9月3日)
             var targetDate = new Date('2112-09-03T00:00:00+09:00');
+            // 残り時間を計算
+            var timeDiff = targetDate - now;
+
+            // 残りの日数、時間、分、秒を計算
+            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            // カウントダウンを表示
+            var countdownElement = document.getElementById('countdown');
+            countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
             
             // 1秒ごとに更新
-            setInterval(function() {
-                // 現在の日時を取得
-                var now = new Date();
-                // 残り時間を計算
-                var timeDiff = targetDate - now;
-
-                // 残りの日数、時間、分、秒を計算
-                var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-                var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-                // カウントダウンを表示
-                var countdownElement = document.getElementById('countdown');
-                countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
-            }, 1000);
+            setTimeout(displayCountdown, 1000);
         }
 
         // ページ読み込み時にキャラクターとカウントダウンを表示
@@ -189,4 +193,3 @@
     </script>
 </body>
 </html>
-
