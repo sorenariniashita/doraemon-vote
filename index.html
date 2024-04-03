@@ -10,7 +10,7 @@
             font-family: Impact, sans-serif; /* インパクトのフォントを使用 */
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #d9edf7; /* 薄い青色に設定 */
             color: black; /* フォントを黒色に設定 */
         }
         .container {
@@ -36,6 +36,7 @@
         }
         .character-name {
             margin-bottom: 5px; /* 投票数との間隔を設定 */
+            width: 100%; /* 名前の部分の横幅を100%に設定 */
         }
         .character-votes {
             font-size: 16px; /* 投票数のフォントサイズを設定 */
@@ -64,6 +65,11 @@
             text-align: center;
             font-size: 20px;
             margin-bottom: 20px;
+            font-family: "Courier New", monospace; /* 等幅フォントに設定 */
+            background-color: black; /* 背景色を黒色に設定 */
+            color: white; /* フォントを白色に設定 */
+            padding: 10px; /* 内側の余白を追加 */
+            border-radius: 5px; /* 角丸に設定 */
         }
     </style>
 </head>
@@ -119,14 +125,14 @@
             sortedCharacters.forEach(function(characterName) {
                 var characterDiv = document.createElement('div');
                 characterDiv.className = 'character';
-                var characterNameDiv = document.createElement('div');
-                characterNameDiv.className = 'character-name';
-                characterNameDiv.textContent = characterName;
-                var characterVotesDiv = document.createElement('div');
-                characterVotesDiv.className = 'character-votes';
-                characterVotesDiv.textContent = '[' + votes[characterName] + '票]';
-                characterDiv.appendChild(characterNameDiv);
-                characterDiv.appendChild(characterVotesDiv);
+                var nameElement = document.createElement('div');
+                nameElement.className = 'character-name';
+                nameElement.textContent = characterName;
+                var votesElement = document.createElement('div');
+                votesElement.className = 'character-votes';
+                votesElement.textContent = '[' + votes[characterName] + '票]';
+                characterDiv.appendChild(nameElement);
+                characterDiv.appendChild(votesElement);
                 characterDiv.onclick = function() {
                     vote(characterName);
                 };
@@ -159,14 +165,17 @@
             var targetDate = new Date('2112-09-03T00:00:00+09:00');
             // 残り時間を計算
             var timeDiff = targetDate - now;
+
             // 残りの日数、時間、分、秒を計算
             var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
             var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
             // カウントダウンを表示
             var countdownElement = document.getElementById('countdown');
-            countdownElement.innerHTML = '2112年9月3日まで: ' + days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
+            countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
+            
             // 1秒ごとに更新
             setTimeout(displayCountdown, 1000);
         }
