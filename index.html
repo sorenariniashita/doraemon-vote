@@ -48,6 +48,11 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        .countdown {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -55,6 +60,7 @@
         <h2>ドラえもんのキャラクター総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
+            <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
         <div id="characters">
@@ -63,7 +69,7 @@
     </div>
 
     <script>
-        // キャラクターの投票数をローカルストレージから取得する
+        // 各キャラクターの投票数をローカルストレージから取得する
         var votes = JSON.parse(localStorage.getItem('votes')) || {
             'ドラえもん': 0,
             'のび太': 0,
@@ -114,4 +120,37 @@
             // 通知を表示
             var notificationDiv = document.getElementById('notification');
             notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
-            // 3秒後に通知をク
+            // 3秒後に通知をクリア
+            setTimeout(function() {
+                notificationDiv.textContent = '';
+            }, 3000);
+        }
+
+        // カウントダウンを表示する関数
+        function displayCountdown() {
+            // 現在の日時を取得
+            var now = new Date();
+            // 目標日時を設定 (2112年9月3日)
+            var targetDate = new Date('2112-09-03T00:00:00+09:00');
+            // 残り時間を計算
+            var timeDiff = targetDate - now;
+            // 残りの日数、時間、分、秒を計算
+            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            // カウントダウンを表示
+            var countdownElement = document.getElementById('countdown');
+            countdownElement.innerHTML = '2112年9月3日まで: ' + days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
+            // 1秒ごとに更新
+            setTimeout(displayCountdown, 1000);
+        }
+
+        // ページ読み込み時にキャラクターとカウントダウンを表示
+        window.onload = function() {
+            displayCharacters();
+            displayCountdown();
+        };
+    </script>
+</body>
+</html>
