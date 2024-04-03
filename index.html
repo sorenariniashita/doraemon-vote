@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ドラえもんのキャラクター総選挙</title>
+    <title>ドラえもん総選挙</title>
     <style>
         /* スタイルを定義 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: Impact, sans-serif; /* インパクトのフォントを使用 */
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            color: black; /* フォントを黒色に設定 */
         }
         .container {
             max-width: 800px;
@@ -57,7 +58,7 @@
 </head>
 <body>
     <div class="container">
-        <h2>ドラえもんのキャラクター総選挙</h2>
+        <h2>ドラえもん総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
             <div class="countdown" id="countdown"></div>
@@ -97,23 +98,29 @@
         function displayCharacters() {
             var charactersDiv = document.getElementById('characters');
             charactersDiv.innerHTML = ''; // 要素をクリアする
-            for (var characterName in votes) {
+
+            // 投票数の多い順にキャラクターをソート
+            var sortedCharacters = Object.keys(votes).sort(function(a, b) {
+                return votes[b] - votes[a];
+            });
+
+            // ソートされたキャラクターを表示
+            sortedCharacters.forEach(function(characterName) {
                 var characterDiv = document.createElement('div');
                 characterDiv.className = 'character';
                 characterDiv.textContent = characterName + '（' + votes[characterName] + '票）';
                 characterDiv.onclick = function() {
-                    var characterName = this.textContent.split('（')[0]; // クリックされたキャラクターの名前を取得
                     vote(characterName);
                 };
                 charactersDiv.appendChild(characterDiv);
-            }
+            });
         }
 
         // 投票を処理する関数
         function vote(characterName) {
             votes[characterName]++; // 投票数を増やす
             displayCharacters(); // キャラクターを再表示して投票数を更新する
-            
+
             // ローカルストレージに投票数を保存
             localStorage.setItem('votes', JSON.stringify(votes));
 
