@@ -190,27 +190,23 @@
         window.onload = function() {
             displayCharacters();
             displayCountdown();
+            updateVisitorCount();
         };
+
+        // 訪問者数を更新する関数
+        function updateVisitorCount() {
+            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
+            count++;
+            localStorage.setItem('visitorCount', count);
+            displayVisitorCount();
+        }
 
         // 訪問者数を表示する関数
         function displayVisitorCount() {
             var visitorCountDiv = document.getElementById('visitor-count');
-            var count = localStorage.getItem('visitorCount') || 0;
-            visitorCountDiv.textContent = 'このページを訪れた人数: ' + count;
+            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
+            visitorCountDiv.textContent = 'このページを訪れた人数: ' + count + '人';
         }
-
-        // ページ読み込み時に訪問者数を表示
-        window.onload = function() {
-            displayVisitorCount();
-        };
-
-        // ページを訪れた際に訪問者数を更新
-        window.onload = function() {
-            var count = localStorage.getItem('visitorCount') || 0;
-            count++;
-            localStorage.setItem('visitorCount', count);
-            displayVisitorCount();
-        };
     </script>
 </body>
 </html>
