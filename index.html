@@ -20,6 +20,7 @@
             background-color: #1294FF; /* ドラえもんの青色に設定 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* 相対的な配置を設定 */
         }
         .character {
             display: inline-block;
@@ -33,6 +34,7 @@
             white-space: nowrap; /* 改行を防止 */
             overflow: hidden; /* 横方向のオーバーフローを隠す */
             text-overflow: ellipsis; /* オーバーフローしたテキストを省略記号で表示 */
+            position: relative; /* 相対的な配置を設定 */
         }
         .character-name {
             margin-bottom: 5px; /* 投票数との間隔を設定 */
@@ -71,10 +73,11 @@
             padding: 10px; /* 内側の余白を追加 */
             border-radius: 5px; /* 角丸に設定 */
         }
-        .visitor-count {
-            text-align: center;
-            font-size: 16px;
-            margin-top: 20px;
+        .character-image {
+            position: absolute; /* 絶対的な配置を設定 */
+            top: -100px; /* 投票箱の上に配置 */
+            left: 50%; /* 中央に配置 */
+            transform: translateX(-50%); /* 水平方向に中央に移動 */
         }
     </style>
 </head>
@@ -89,7 +92,8 @@
         <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
-        <div class="visitor-count" id="visitor-count"></div>
+        <!-- のび太の画像 -->
+        <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
     </div>
 
     <script>
@@ -190,22 +194,16 @@
         window.onload = function() {
             displayCharacters();
             displayCountdown();
+
+            // 訪問者数を更新
             updateVisitorCount();
         };
 
         // 訪問者数を更新する関数
         function updateVisitorCount() {
-            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
-            count++;
-            localStorage.setItem('visitorCount', count);
-            displayVisitorCount();
-        }
-
-        // 訪問者数を表示する関数
-        function displayVisitorCount() {
             var visitorCountDiv = document.getElementById('visitor-count');
             var count = parseInt(localStorage.getItem('visitorCount')) || 0;
-            visitorCountDiv.textContent = '君は' + toOrdinal(count) + 'の訪問者です';
+            visitorCountDiv.textContent = 'このページを訪れた人数: ' + toOrdinal(count);
         }
 
         // 数字を序数に変換する関数
