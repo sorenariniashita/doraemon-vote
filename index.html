@@ -96,14 +96,6 @@
         <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
-        <!-- のび太の画像を投票ボタン内に挿入 -->
-        <div class="character" onclick="vote('のび太')">
-            <div class="character-image-container">
-                <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
-            </div>
-            <div class="character-name">のび太</div>
-            <div class="character-votes">[0票]</div>
-        </div>
     </div>
 
     <script>
@@ -193,6 +185,17 @@
                 votesElement.textContent = '[' + votes[characterName] + '票]';
                 characterDiv.appendChild(nameElement);
                 characterDiv.appendChild(votesElement);
+                if (characterName === 'のび太') {
+                    // のび太の場合は画像を挿入
+                    var imageContainer = document.createElement('div');
+                    imageContainer.className = 'character-image-container';
+                    var image = document.createElement('img');
+                    image.src = 'https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg';
+                    image.alt = 'のび太';
+                    image.className = 'character-image';
+                    imageContainer.appendChild(image);
+                    characterDiv.appendChild(imageContainer);
+                }
                 characterDiv.onclick = function() {
                     vote(characterName);
                 };
@@ -225,4 +228,3 @@
     </script>
 </body>
 </html>
-
