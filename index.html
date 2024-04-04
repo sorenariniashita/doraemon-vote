@@ -71,6 +71,11 @@
             padding: 10px; /* 内側の余白を追加 */
             border-radius: 5px; /* 角丸に設定 */
         }
+        .visitor-count {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +89,7 @@
         <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
+        <div class="visitor-count" id="visitor-count"></div>
     </div>
 
     <script>
@@ -184,6 +190,26 @@
         window.onload = function() {
             displayCharacters();
             displayCountdown();
+        };
+
+        // 訪問者数を表示する関数
+        function displayVisitorCount() {
+            var visitorCountDiv = document.getElementById('visitor-count');
+            var count = localStorage.getItem('visitorCount') || 0;
+            visitorCountDiv.textContent = 'このページを訪れた人数: ' + count;
+        }
+
+        // ページ読み込み時に訪問者数を表示
+        window.onload = function() {
+            displayVisitorCount();
+        };
+
+        // ページを訪れた際に訪問者数を更新
+        window.onload = function() {
+            var count = localStorage.getItem('visitorCount') || 0;
+            count++;
+            localStorage.setItem('visitorCount', count);
+            displayVisitorCount();
         };
     </script>
 </body>
