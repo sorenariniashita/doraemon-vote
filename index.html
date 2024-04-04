@@ -74,10 +74,15 @@
             border-radius: 5px; /* 角丸に設定 */
         }
         .character-image {
+            width: 75%; /* 画像の幅を0.75倍に縮小 */
             position: absolute; /* 絶対的な配置を設定 */
             top: -100px; /* 投票箱の上に配置 */
             left: 50%; /* 中央に配置 */
             transform: translateX(-50%); /* 水平方向に中央に移動 */
+        }
+        .character-details {
+            position: relative; /* 相対的な配置を設定 */
+            padding-top: 150px; /* 上部の余白を調整 */
         }
     </style>
 </head>
@@ -89,7 +94,7 @@
             <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
-        <div id="characters">
+        <div id="characters" class="character-details">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
         <!-- のび太の画像 -->
