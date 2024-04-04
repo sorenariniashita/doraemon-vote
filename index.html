@@ -73,16 +73,19 @@
             padding: 10px; /* 内側の余白を追加 */
             border-radius: 5px; /* 角丸に設定 */
         }
-        .character-image {
-            max-height: 150px; /* 画像の最大高さを設定 */
-            position: absolute; /* 絶対的な配置を設定 */
-            top: -150px; /* 投票箱の上に配置 */
-            left: 50%; /* 中央に配置 */
-            transform: translateX(-50%); /* 水平方向に中央に移動 */
-        }
-        .character-details {
+        .character-image-container {
             position: relative; /* 相対的な配置を設定 */
-            padding-top: 150px; /* 上部の余白を調整 */
+            overflow: hidden; /* 写真が枠からはみ出さないようにする */
+            height: 238px; /* 写真の高さに合わせる */
+            margin-bottom: 20px; /* 下部の余白を追加 */
+        }
+        .character-image {
+            max-width: 100%; /* 画像の幅が枠内に収まるようにする */
+            display: block; /* 余白を解消する */
+            margin: auto; /* 画像を中央に配置する */
+            position: relative; /* 相対的な配置を設定 */
+            top: 50%; /* 上部を中央に配置 */
+            transform: translateY(-50%); /* 垂直方向に中央に移動 */
         }
     </style>
 </head>
@@ -94,11 +97,13 @@
             <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
-        <div id="characters" class="character-details">
+        <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
         <!-- のび太の画像 -->
-        <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
+        <div class="character-image-container">
+            <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
+        </div>
     </div>
 
     <script>
@@ -199,25 +204,7 @@
         window.onload = function() {
             displayCharacters();
             displayCountdown();
-
-            // 訪問者数を更新
-            updateVisitorCount();
         };
-
-        // 訪問者数を更新する関数
-        function updateVisitorCount() {
-            var visitorCountDiv = document.getElementById('visitor-count');
-            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
-            visitorCountDiv.textContent = 'このページを訪れた人数: ' + toOrdinal(count);
-        }
-
-        // 数字を序数に変換する関数
-        function toOrdinal(number) {
-            var suffix = ['th', 'st', 'nd', 'rd'];
-            var relevantDigits = (number < 30) ? number % 20 : number % 10;
-            var suffixIndex = (relevantDigits <= 3) ? relevantDigits : 0;
-            return number + suffix[suffixIndex];
-        }
     </script>
 </body>
 </html>
