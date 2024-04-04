@@ -74,9 +74,9 @@
             border-radius: 5px; /* 角丸に設定 */
         }
         .character-image {
-            width: 75%; /* 画像の幅を0.75倍に縮小 */
+            max-height: 150px; /* 画像の最大高さを設定 */
             position: absolute; /* 絶対的な配置を設定 */
-            top: -100px; /* 投票箱の上に配置 */
+            top: -150px; /* 投票箱の上に配置 */
             left: 50%; /* 中央に配置 */
             transform: translateX(-50%); /* 水平方向に中央に移動 */
         }
@@ -221,3 +221,4 @@
     </script>
 </body>
 </html>
+
