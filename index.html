@@ -89,6 +89,7 @@
         <h2>ドラえもん総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
+            <p id="visitor-text"></p> <!-- 訪問者数を表示する文言 -->
             <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
@@ -130,6 +131,46 @@
             '☆神成さん': 0
         };
 
+        // カウントダウンを表示する関数
+        function displayCountdown() {
+            // 現在の日時を取得
+            var now = new Date();
+            // 目標日時を設定 (2112年9月3日)
+            var targetDate = new Date('2112-09-03T00:00:00+09:00');
+            // 残り時間を計算
+            var timeDiff = targetDate - now;
+
+            // 残りの日数、時間、分、秒を計算
+            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+            // カウントダウンを表示
+            var countdownElement = document.getElementById('countdown');
+            countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
+            
+            // 1秒ごとに更新
+            setTimeout(displayCountdown, 1000);
+        }
+
+        // 投票を処理する関数
+        function vote(characterName) {
+            votes[characterName]++; // 投票数を増やす
+            displayCharacters(); // キャラクターを再表示して投票数を更新する
+
+            // ローカルストレージに投票数を保存
+            localStorage.setItem('votes', JSON.stringify(votes));
+
+            // 通知を表示
+            var notificationDiv = document.getElementById('notification');
+            notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
+            // 3秒後に通知をクリア
+            setTimeout(function() {
+                notificationDiv.textContent = '';
+            }, 3000);
+        }
+
         // キャラクターの名前と投票数を表示する関数
         function displayCharacters() {
             var charactersDiv = document.getElementById('characters');
@@ -159,50 +200,27 @@
             });
         }
 
-        // 投票を処理する関数
-        function vote(characterName) {
-            votes[characterName]++; // 投票数を増やす
-            displayCharacters(); // キャラクターを再表示して投票数を更新する
-
-            // ローカルストレージに投票数を保存
-            localStorage.setItem('votes', JSON.stringify(votes));
-
-            // 通知を表示
-            var notificationDiv = document.getElementById('notification');
-            notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
-            // 3秒後に通知をクリア
-            setTimeout(function() {
-                notificationDiv.textContent = '';
-            }, 3000);
-        }
-
-        // カウントダウンを表示する関数
-        function displayCountdown() {
-            // 現在の日時を取得
-            var now = new Date();
-            // 目標日時を設定 (2112年9月3日)
-            var targetDate = new Date('2112-09-03T00:00:00+09:00');
-            // 残り時間を計算
-            var timeDiff = targetDate - now;
-
-            // 残りの日数、時間、分、秒を計算
-            var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-            // カウントダウンを表示
-            var countdownElement = document.getElementById('countdown');
-            countdownElement.innerHTML = days + '日 ' + hours + '時間 ' + minutes + '分 ' + seconds + '秒';
-            
-            // 1秒ごとに更新
-            setTimeout(displayCountdown, 1000);
-        }
-
         // ページ読み込み時にキャラクターとカウントダウンを表示
         window.onload = function() {
             displayCharacters();
             displayCountdown();
+
+            // 訪問者数をローカルストレージから取得
+            var visitorCount = localStorage.getItem('visitorCount');
+            if (!visitorCount) {
+                // 初回の訪問の場合、訪問者数を1として記録
+                visitorCount = 1;
+            } else {
+                // 既存の訪問者数に1を加算
+                visitorCount = parseInt(visitorCount) + 1;
+            }
+
+            // 訪問者数をローカルストレージに保存
+            localStorage.setItem('visitorCount', visitorCount);
+
+            // 訪問者数を表示
+            var visitorTextElement = document.getElementById('visitor-text');
+            visitorTextElement.textContent = '君が' + visitorCount + 'th目の訪問者だ。';
         };
     </script>
 </body>
