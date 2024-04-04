@@ -205,7 +205,15 @@
         function displayVisitorCount() {
             var visitorCountDiv = document.getElementById('visitor-count');
             var count = parseInt(localStorage.getItem('visitorCount')) || 0;
-            visitorCountDiv.textContent = 'このページを訪れた人数: ' + count + '人';
+            visitorCountDiv.textContent = '君は' + toOrdinal(count) + 'の訪問者です';
+        }
+
+        // 数字を序数に変換する関数
+        function toOrdinal(number) {
+            var suffix = ['th', 'st', 'nd', 'rd'];
+            var relevantDigits = (number < 30) ? number % 20 : number % 10;
+            var suffixIndex = (relevantDigits <= 3) ? relevantDigits : 0;
+            return number + suffix[suffixIndex];
         }
     </script>
 </body>
