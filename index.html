@@ -74,18 +74,13 @@
             border-radius: 5px; /* 角丸に設定 */
         }
         .character-image-container {
-            position: relative; /* 相対的な配置を設定 */
-            overflow: hidden; /* 写真が枠からはみ出さないようにする */
-            height: 238px; /* 写真の高さに合わせる */
+            text-align: center; /* 中央揃え */
             margin-bottom: 20px; /* 下部の余白を追加 */
         }
         .character-image {
-            max-width: 100%; /* 画像の幅が枠内に収まるようにする */
-            display: block; /* 余白を解消する */
-            margin: auto; /* 画像を中央に配置する */
-            position: relative; /* 相対的な配置を設定 */
-            top: 50%; /* 上部を中央に配置 */
-            transform: translateY(-50%); /* 垂直方向に中央に移動 */
+            max-width: 100px; /* 画像の幅を制限 */
+            border-radius: 50%; /* 画像を円形にする */
+            margin-bottom: 10px; /* 画像とテキストの間隔を追加 */
         }
     </style>
 </head>
@@ -101,8 +96,12 @@
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
         <!-- のび太の画像 -->
-        <div class="character-image-container">
-            <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
+        <div class="character" onclick="vote('のび太')">
+            <div class="character-image-container">
+                <img src="https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg" alt="のび太" class="character-image">
+            </div>
+            <div class="character-name">のび太</div>
+            <div class="character-votes">[0票]</div>
         </div>
     </div>
 
