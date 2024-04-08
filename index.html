@@ -20,11 +20,10 @@
             background-color: #1294FF; /* ドラえもんの青色に設定 */
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            position: relative; /* 相対的な配置を設定 */
         }
         .character {
             display: inline-block;
-            width: calc(25% - 20px); /* 一列に4つ並べるための幅 */
+            width: calc(20% - 20px); /* 20% - 20pxの幅を持つ */
             padding: 10px;
             margin: 10px;
             text-align: center;
@@ -34,8 +33,6 @@
             white-space: nowrap; /* 改行を防止 */
             overflow: hidden; /* 横方向のオーバーフローを隠す */
             text-overflow: ellipsis; /* オーバーフローしたテキストを省略記号で表示 */
-            position: relative; /* 相対的な配置を設定 */
-            max-width: calc(33.33% - 20px); /* 一列に3つ並べるための幅 */
         }
         .character-name {
             margin-bottom: 5px; /* 投票数との間隔を設定 */
@@ -74,14 +71,10 @@
             padding: 10px; /* 内側の余白を追加 */
             border-radius: 5px; /* 角丸に設定 */
         }
-        .character-image-container {
-            text-align: center; /* 中央揃え */
-            margin-bottom: 20px; /* 下部の余白を追加 */
-        }
-        .character-image {
-            max-width: 100px; /* 画像の幅を制限 */
-            border-radius: 50%; /* 画像を円形にする */
-            margin-bottom: 10px; /* 画像とテキストの間隔を追加 */
+        .visitor-count {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -90,13 +83,13 @@
         <h2>ドラえもん総選挙</h2>
         <div class="additional-info">
             <p>ドラえもんの誕生日は2112年9月3日。総選挙ぶっちぎり一位で迎えよう！</p>
-            <p id="visitor-text"></p> <!-- 訪問者数を表示する文言 -->
             <div class="countdown" id="countdown"></div>
         </div>
         <div class="notification" id="notification"></div>
         <div id="characters">
             <!-- キャラクターのボタンがここに追加されます -->
         </div>
+        <div class="visitor-count" id="visitor-count"></div>
     </div>
 
     <script>
@@ -110,9 +103,9 @@
             '野比玉子': 0,
             '野比のび助': 0,
             'ノビスケ': 0,
-            'のび太の祖母': 0,
+            'のび太のおばあちゃん': 0,
             'ジャイ子': 0,
-            'ジャイアンの母': 0,
+            'ジャイアンの母ちゃん': 0,
             'スネツグ': 0,
             'スネ吉': 0,
             'ドラミ': 0,
@@ -123,6 +116,52 @@
             '先生': 0,
             '☆神成さん': 0
         };
+
+        // キャラクターの名前と投票数を表示する関数
+        function displayCharacters() {
+            var charactersDiv = document.getElementById('characters');
+            charactersDiv.innerHTML = ''; // 要素をクリアする
+
+            // 投票数の多い順にキャラクターをソート
+            var sortedCharacters = Object.keys(votes).sort(function(a, b) {
+                return votes[b] - votes[a];
+            });
+
+            // ソートされたキャラクターを表示
+            sortedCharacters.forEach(function(characterName) {
+                var characterDiv = document.createElement('div');
+                characterDiv.className = 'character';
+                var nameElement = document.createElement('div');
+                nameElement.className = 'character-name';
+                nameElement.textContent = characterName;
+                var votesElement = document.createElement('div');
+                votesElement.className = 'character-votes';
+                votesElement.textContent = '[' + votes[characterName] + '票]';
+                characterDiv.appendChild(nameElement);
+                characterDiv.appendChild(votesElement);
+                characterDiv.onclick = function() {
+                    vote(characterName);
+                };
+                charactersDiv.appendChild(characterDiv);
+            });
+        }
+
+        // 投票を処理する関数
+        function vote(characterName) {
+            votes[characterName]++; // 投票数を増やす
+            displayCharacters(); // キャラクターを再表示して投票数を更新する
+
+            // ローカルストレージに投票数を保存
+            localStorage.setItem('votes', JSON.stringify(votes));
+
+            // 通知を表示
+            var notificationDiv = document.getElementById('notification');
+            notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
+            // 3秒後に通知をクリア
+            setTimeout(function() {
+                notificationDiv.textContent = '';
+            }, 3000);
+        }
 
         // カウントダウンを表示する関数
         function displayCountdown() {
@@ -147,85 +186,35 @@
             setTimeout(displayCountdown, 1000);
         }
 
-        // 投票を処理する関数
-        function vote(characterName) {
-            votes[characterName]++; // 投票数を増やす
-            displayCharacters(); // キャラクターを再表示して投票数を更新する
-
-            // ローカルストレージに投票数を保存
-            localStorage.setItem('votes', JSON.stringify(votes));
-
-            // 通知を表示
-            var notificationDiv = document.getElementById('notification');
-            notificationDiv.textContent = characterName + 'に一票が入りました！（現在の投票数：' + votes[characterName] + '票）';
-            // 3秒後に通知をクリア
-            setTimeout(function() {
-                notificationDiv.textContent = '';
-            }, 3000);
-        }
-
-        // キャラクターの名前と投票数を表示する関数
-        function displayCharacters() {
-            var charactersDiv = document.getElementById('characters');
-            charactersDiv.innerHTML = ''; // 要素をクリアする
-
-            // 投票数の多い順にキャラクターをソート
-            var sortedCharacters = Object.keys(votes).sort(function(a, b) {
-                return votes[b] - votes[a];
-            });
-
-            // ソートされたキャラクターを表示
-            sortedCharacters.forEach(function(characterName) {
-                var characterDiv = document.createElement('div');
-                characterDiv.className = 'character';
-                var nameElement = document.createElement('div');
-                nameElement.className = 'character-name';
-                nameElement.textContent = characterName;
-                var votesElement = document.createElement('div');
-                votesElement.className = 'character-votes';
-                votesElement.textContent = '[' + votes[characterName] + '票]';
-                characterDiv.appendChild(nameElement);
-                characterDiv.appendChild(votesElement);
-                if (characterName === 'のび太') {
-                    // のび太の場合は画像を挿入
-                    var imageContainer = document.createElement('div');
-                    imageContainer.className = 'character-image-container';
-                    var image = document.createElement('img');
-                    image.src = 'https://pics.prcm.jp/faaaaapipipu/47513662/jpeg/47513662_220x238.jpeg';
-                    image.alt = 'のび太';
-                    image.className = 'character-image';
-                    imageContainer.appendChild(image);
-                    characterDiv.appendChild(imageContainer);
-                }
-                characterDiv.onclick = function() {
-                    vote(characterName);
-                };
-                charactersDiv.appendChild(characterDiv);
-            });
-        }
-
         // ページ読み込み時にキャラクターとカウントダウンを表示
         window.onload = function() {
             displayCharacters();
             displayCountdown();
-
-            // 訪問者数をローカルストレージから取得
-            var visitorCount = localStorage.getItem('visitorCount');
-            if (!visitorCount) {
-                // 初回の訪問の場合、訪問者数を1として記録
-                visitorCount = 1;
-            } else {
-                // 既存の訪問者数に1を加算
-                visitorCount = parseInt(visitorCount) + 1;
-            }
-
-            // 訪問者数をローカルストレージに保存
-            localStorage.setItem('visitorCount', visitorCount);
-
-            // 訪問者数を表示
-            var visitorTextElement = document.getElementById('visitor-text');
-            visitorTextElement.textContent = '君が' + visitorCount + 'th目の訪問者だ。';
+            updateVisitorCount();
         };
+
+        // 訪問者数を更新する関数
+        function updateVisitorCount() {
+            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
+            count++;
+            localStorage.setItem('visitorCount', count);
+            displayVisitorCount();
+        }
+
+        // 訪問者数を表示する関数
+        function displayVisitorCount() {
+            var visitorCountDiv = document.getElementById('visitor-count');
+            var count = parseInt(localStorage.getItem('visitorCount')) || 0;
+            visitorCountDiv.textContent = '君は' + toOrdinal(count) + 'の訪問者です';
+        }
+
+        // 数字を序数に変換する関数
+        function toOrdinal(number) {
+            var suffix = ['th', 'st', 'nd', 'rd'];
+            var relevantDigits = (number < 30) ? number % 20 : number % 10;
+            var suffixIndex = (relevantDigits <= 3) ? relevantDigits : 0;
+            return number + suffix[suffixIndex];
+        }
     </script>
 </body>
 </html>
