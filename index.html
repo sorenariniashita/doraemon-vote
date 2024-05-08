@@ -148,17 +148,6 @@
                 votesElement.textContent = '[' + votes[characterName] + '票]';
                 characterDiv.appendChild(nameElement);
                 characterDiv.appendChild(votesElement);
-                if (characterName === 'のび太') {
-                    // のび太の場合は画像を挿入
-                    var imageContainer = document.createElement('div');
-                    imageContainer.className = 'character-image-container';
-                    var image = document.createElement('img');
-                    image.src = 'https://example.com/nobita.jpg'; // 画像のURLを指定
-                    image.alt = 'のび太';
-                    image.className = 'character-image';
-                    imageContainer.appendChild(image);
-                    characterDiv.appendChild(imageContainer);
-                }
                 characterDiv.onclick = function() {
                     vote(characterName);
                 };
